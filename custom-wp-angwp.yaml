@@ -1,0 +1,19 @@
+id: angwp-config-file
+
+info:
+  name: angwp-config-file
+  author: cybersecivan
+  severity: info
+
+requests:
+  - method: GET
+    path:
+      - "{{BaseURL}}/wp-content/plugins/angwp/package.json"
+      - "{{BaseURL}}/wp/wp-content/plugins/angwp/package.json"
+      - "{{BaseURL}}/blog/wp-content/plugins/angwp/package.json"
+
+    matchers:
+      - type: dsl
+        name: package.json
+        dsl:
+          - "contains(body, 'adning') == true && status_code == 200"

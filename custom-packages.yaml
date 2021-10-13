@@ -1,0 +1,50 @@
+id: packages
+
+info:
+  name: npm, pip, PHP, nuget, Maven, RubyGems
+  author: cybersecivan
+  severity: info
+  description: npm, pip, PHP, nuget, Maven, RubyGems package information disclosure
+
+requests:
+  - method: GET
+    path:
+      - "{{BaseURL}}/package.json"
+      - "{{BaseURL}}/installed.json"
+      - "{{BaseURL}}/Gemfile"
+      - "{{BaseURL}}/pom.xml"
+      - "{{BaseURL}}/nuget.config"
+      - "{{BaseURL}}/requirements.txt"
+      - "{{BaseURL}}/package-lock.json"
+      - "{{BaseURL}}/composer.json"
+      - "{{BaseURL}}/composer.lock"
+      - "{{BaseURL}}/.composer/composer.json"
+      - "{{BaseURL}}/vendor/composer/installed.json"
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        words:
+          - "name"
+          - "require"
+          - "config"
+          - "project"
+          - "=="
+          - "source"
+        part: body
+        condition: or
+
+      - type: word
+        words:
+          - "application/json"
+          - "application/octet-stream"
+          - "text/plain"
+          - "application/xhtml+xml"
+          - "application/xml"
+          - "text/xml"
+        part: header
+        condition: or
+
+      - type: status
+        status:
+          - 200
